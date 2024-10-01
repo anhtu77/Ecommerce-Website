@@ -61,16 +61,16 @@
       <section class="container single-product my-5 pt-5">
         <div class="row mt-5">
             <div class="col-lg-5 col-md-6 col-sm-12">
-                <img class="img-fluid w-100 pb-1" src="assets/imgs/featured1.png" />
+                <img class="img-fluid w-100 pb-1" src="assets/imgs/featured1.png" id="mainImg"/>
                 <div class="small-img-group">
                     <div class="small-img-col">
-                        <img src="assets/imgs/featured1.png" width="100%" class="small-img"/>
+                        <img src="assets/imgs/featured2.jpg" width="100%" class="small-img"/>
                     </div>
                     <div class="small-img-col">
                         <img src="assets/imgs/featured1.png" width="100%" class="small-img"/>
                     </div>
                     <div class="small-img-col">
-                        <img src="assets/imgs/featured1.png" width="100%" class="small-img"/>
+                        <img src="assets/imgs/featured2.jpg" width="100%" class="small-img"/>
                     </div>
                     <div class="small-img-col">
                         <img src="assets/imgs/featured1.png" width="100%" class="small-img"/>
@@ -251,5 +251,17 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <script>
+      var mainImg = document.getElementById("mainImg");
+      var smallImg = document.getElementsByClassName("small-img");
+      for(let i=0; i<4; i++) {
+            smallImg[i].onclick = function(){
+            mainImg.src = smallImg[i].src;
+         }
+
+      }
+
+    </script>
 </body>
 </html>

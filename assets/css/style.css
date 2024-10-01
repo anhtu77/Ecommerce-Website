@@ -343,3 +343,10 @@ footer .copyright img{
 .single-product .buy-btn:hover{
     background-color: #222222;
 }
+
+
+/* contact */
+#contact a{
+    color: #cf0a2c;
+    text-decoration: none;
+}

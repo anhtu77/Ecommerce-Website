@@ -1,0 +1,61 @@
+/* #register-form{
+    width: 50%;
+    margin: 5px auto;
+    text-align: center;
+    padding: 20px;
+    border-top:1px solid #cf0a2c;
+}
+
+#register-form input{
+    width: 50%;
+    margin: 5px auto;
+}
+
+#register-form #register-btn{
+    background-color: #cf0a2c;
+    color: #fff;
+}
+
+#register-form #login-url{
+    color: #cf0a2c;
+} */
+
+#register-form {
+    width: 50%;
+    margin: 5px auto;
+    padding: 20px;
+    border-top: 1px solid #cf0a2c;
+}
+
+#register-form .form-group {
+    display: flex;
+    flex-direction: column; /* Align label and input vertically */
+    align-items: center; /* Center the label and input horizontally */
+}
+
+#register-form label {
+    width: 50%; /* Ensure the label is aligned with the input field width */
+    text-align: left;
+    margin-bottom: 5px; /* Space between label and input */
+}
+
+#register-form input {
+    width: 50%; /* Keep input fields at 50% width */
+    margin: 5px auto;
+    padding: 10px; /* Add padding for better spacing */
+}
+
+#register-form #register-btn {
+    background-color: #cf0a2c;
+    color: #fff;
+    width: 50%; /* Keep the button at 50% width */
+    margin: 10px auto;
+}
+
+#register-form #login-url {
+    color: #cf0a2c;
+    display: block;
+    margin-top: 10px;
+    text-align: center;
+}
+
