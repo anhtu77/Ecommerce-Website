@@ -37,12 +37,17 @@
     color: #cf0a2c;
     text-decoration: none;
     font-size: 14px;
+    background-color: #fff;
+    border: none;
+    width: 100%;
 }
 
 .cart .edit-btn{
     color: #cf0a2c;
     text-decoration: none;
     font-size: 15px;
+    background-color: #fff;
+    border: none;
 }
 
 .cart .product-info p{
