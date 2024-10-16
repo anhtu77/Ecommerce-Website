@@ -1,9 +1,19 @@
+<?php
+
+session_start();
+
+?>
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Home</title>
 
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -11,15 +21,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/register.css">
+    <link rel="stylesheet" href="assets/css/checkout.css">
 </head>
 <body>
+
+
 
      <!--Navbar-->
      <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 fixed-top">
       <div class="container">
-        <img class="logo" src="assets/imgs/logo.png"/>
-        <h2 class="brand">TSport</h2>
+      <a href="index.php"><img class="logo" src="assets/imgs/logo.png"/></a>
+      <a href="index.php"><h2 class="brand">TSport</h2></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -27,7 +39,7 @@
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
             <li class="nav-item">
-              <a class="nav-link" href="index.html">Home</a>
+              <a class="nav-link" href="index.php">Home</a>
             </li>
 
             <li class="nav-item">
@@ -43,8 +55,8 @@
             </li>
 
             <li class="nav-item">
-              <a class="icon" href="cart.html"><i class="fas fa-cart-shopping"></i></a>
-              <a class="icon" href="account.html"><i class="fas fa-user"></i></a>
+              <a class="icon" href="cart.php"><i class="fas fa-cart-shopping"></i></a>
+                <a class="icon" href="account.html"><i class="fas fa-user"></i></a>
             </li>
 
         
@@ -56,45 +68,39 @@
 
 
 
-    <!-- Register -->
-     <section class="my-5 py-5">
+
+    <!-- payment -->
+    <section class="my-5 py-5">
         <div class="container text-center mt-3 pt-5">
-            <h2 class="form-weight-blod">Register</h2>
+            <h2 class="form-weight-blod">Payment</h2>
             <hr class="mx-auto">
         </div>
-        <div class="mx-auto container">
-            <form id="register-form">
-                <div class="form-group">
-                    <label>Name</label>
-                    <input type="text" class="form-control" id="register-name" name="name" placeholder="Name" required/>
-                </div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="text" class="form-control" id="register-email" name="email" placeholder="Email" required/>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" class="form-control" id="register-password" name="password" placeholder="Password" required/>
-                </div>
-                <div class="form-group">
-                    <label>Confirm Password</label>
-                    <input type="password" class="form-control" id="register-confirm-password" name="confirmpassword" placeholder="ConfirmPassword" required/>
-                </div>
-                <div class="form-group">
-                    <input type="submit" class="btn" id="register-btn" value="Register"/>
-                </div>
-                <div class="form-group">
-                    <a id="login-url" class="btn">Do you have account? Login</a>
-                </div>
-            </form>
+        <div class="mx-auto container text-center">
+            <p><?php echo $_GET['order_status']; ?></p>
+            <p>Total payment: $<?php echo $_SESSION['total'];?></p>
+            <input class="btn btn-primary" type="submit" value="Pay Now"/>
         </div>
      </section>
+  
+
+
+    
 
 
 
 
 
-         <!--Footer-->
+
+
+
+
+
+
+
+
+
+
+        <!--Footer-->
     <footer class="mt-5 py-5">
         <div class="row container mx-auto pt-5">
           <div class="footer-one col-lg-3 col-md-6 col-sm-12">
@@ -159,6 +165,28 @@
   
       </footer>
   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -16,8 +16,8 @@
     <!--Navbar-->
     <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 fixed-top">
         <div class="container">
-          <img class="logo" src="assets/imgs/logo.png"/>
-          <h2 class="brand">TSport</h2>
+          <a href="index.php"><img class="logo" src="assets/imgs/logo.png"/></a>
+         <a href="index.php"><h2 class="brand">TSport</h2></a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -41,7 +41,7 @@
               </li>
 
               <li class="nav-item">
-                <a class="icon" href="cart.html"><i class="fas fa-cart-shopping"></i></a>
+                <a class="icon" href="cart.php"><i class="fas fa-cart-shopping"></i></a>
                 <a class="icon" href="account.html"><i class="fas fa-user"></i></a>
               </li>
 
