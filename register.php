@@ -5,6 +5,16 @@ session_start();
 include('server/connection.php');
 
 
+
+      // neu nguoi dung da dang ki thanh cong, ho khong the vao trang dang ki 
+if(isset($_SESSION['logged_in'])){
+      header('location: account.php');
+      exit;
+}
+    
+
+
+
 if(isset($_POST['register'])){
 
   $name = $_POST['name'];
@@ -45,7 +55,7 @@ else{
                     $_SESSION['user_email'] = $email;
                     $_SESSION['user_name'] = $name;
                     $_SESSION['logged_in']  = true;
-                    header('location: account.php?register=Bạn đã đăng kí thành công');
+                    header('location: account.php?register_success=Bạn đã đăng kí thành công');
 
                // tai khoan khong duoc tao     
               }else{
@@ -55,12 +65,7 @@ else{
 
         }
 
-      }
-
-      // neu nguoi dung da dang ki thanh cong, ho khong the vao trang dang ki 
-}else if(isset($_SESSION['logged_in'])){
-  header('location: account.php');
-  exit;
+}
 }
 
 
