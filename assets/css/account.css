@@ -34,11 +34,11 @@
     padding: 5px 10px;
     color: #fff;
     background-color: #cf0a2c;
-    text-align: left;
+    /* text-align: left; */
 }
 
 .orders th:nth-child(2){
-    text-align: right;
+    /* text-align: right; */
 }
 
 .orders td{
@@ -50,4 +50,9 @@
     width: 80px;
     height: 80px;
     margin-right: 10px;
+}
+
+.orders .order-details-btn{
+    color: #fff;
+    background-color: #cf0a2c;
 }
