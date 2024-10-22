@@ -4,6 +4,13 @@ session_start();
 
 include('connection.php');
 
+if(!isset($_SESSION['logged_in'])) {
+    header('location: ../checkout.php?message=Vui lòng đăng nhập để đặt hàng.');
+    exit;
+
+    // neu nguoi dung da dang nhap
+}else{
+
 if(isset($_POST['place_order'])){
 
     //get user info an store it in database
@@ -21,7 +28,11 @@ if(isset($_POST['place_order'])){
                     VALUES (?,?,?,?,?,?,?); ");
     $stmt->bind_param('isiisss', $order_cost, $order_status, $user_id, $phone, $city, $address, $order_date);
 
-    $stmt->execute();
+    $stmt_status = $stmt->execute();
+    if(!$stmt_status){
+        header('location: index.php');
+        exit;
+    }
 
     //issue new order store order infor in database
     $order_id = $stmt->insert_id;
@@ -66,5 +77,5 @@ if(isset($_POST['place_order'])){
 
 
 
-
+}
 ?>

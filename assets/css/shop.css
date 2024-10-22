@@ -12,3 +12,16 @@
     color: #fff;
     background-color: #cf0a2c;
 }
+
+#search{
+    position: fixed;
+    top: 5px;
+    float: left;
+}
+
+.shop-buy-btn{
+    background-color: #cf0a2c;
+    opacity: 1;
+    color: #fff;
+    text-decoration: none;
+}
