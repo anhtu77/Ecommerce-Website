@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set('Asia/Ho_Chi_Minh');
 session_start();
 include('server/connection.php');
 
@@ -86,47 +86,15 @@ include('layouts/header.php');
 ?>
 
 
-        <div class="container">
-            <a href="index.php"><img class="logo" src="assets/imgs/logo.png"/></a>
-         <a href="index.php"><h2 class="brand">TSport</h2></a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse nav-buttons" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-              <li class="nav-item">
-                <a class="nav-link" href="index.php">Home</a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="shop.html">Shop</a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="#">Blog</a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href="/contact.html">Contact Us</a>
-              </li>
-
-              <li class="nav-item">
-                <a class="icon" href="cart.php"><i class="fas fa-cart-shopping"></i></a>
-                <a class="icon" href="account.html"><i class="fas fa-user"></i></a>
-              </li>
-
-          
-            </ul>
-
-          </div>
-        </div>
-      </nav>
 
 
     <!-- Account -->
     <section class="my-5 py-5">
         <div class="row container mx-auto">
+            <?php if(isset($_GET['payment_message'])){ ?>
+                <p class="mt-5 text-center" style="color:green"><?php echo $_GET['payment_message']; ?></p>
+            <?php }?>
+           
             <div class="text-center mt-3 pt-5 col-lg-6 col-md-12 col-sm-12">
             <p class="text-center" style="color:green"><?php if(isset($_GET['register_success'])){echo $_GET['register_success'];} ?></p>
             <p class="text-center" style="color:green"><?php if(isset($_GET['login_success'])){echo $_GET['login_success'];} ?></p>

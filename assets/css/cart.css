@@ -82,3 +82,12 @@ th:last-child{
     background-color: #cf0a2c;
     color: #fff;
 }
+
+.cart_quantity{
+    background-color: #cf0a2c;
+    color: #fff;
+    padding: 2px 5px;
+    border-radius: 50%;
+    margin: -5px;
+    font-size: 1rem;
+}

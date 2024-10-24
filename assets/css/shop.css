@@ -25,3 +25,7 @@
     color: #fff;
     text-decoration: none;
 }
+.pagination .active .page-link {
+    background-color: #007bff; /* Màu nền của trang đang chọn */
+    color: white; /* Màu chữ */
+}
