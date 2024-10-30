@@ -1,6 +1,12 @@
+
+<?php 
+include('layouts/header.php');
+
+?>
+
 <?php
 
-session_start();
+
 
 if(!isset($_SESSION['logged_in'])){
   header('location: login.php');
@@ -119,11 +125,6 @@ function calculateTotalCart(){
 
 ?>
 
-<?php 
-include('layouts/header.php');
-
-?>
-
 
 
       <!-- cart -->
@@ -141,7 +142,7 @@ include('layouts/header.php');
                 <th>Subtotal</th>
             </tr>
 
-
+            <?php if(isset($_SESSION['cart'])) { ?>
             <?php foreach($_SESSION['cart'] as $key => $value){ ?>
 
             <tr>
@@ -177,7 +178,7 @@ include('layouts/header.php');
                 </td>
             </tr>
             <?php } ?>
-
+            <?php } ?>
         </table>
 
         <div class="cart-total">
@@ -188,7 +189,9 @@ include('layouts/header.php');
                 </tr> -->
                 <tr>
                     <td>Total</td>
+                    <?php if(isset($_SESSION['total'])){ ?>
                     <td>$ <?php echo $_SESSION['total']; ?></td>
+                    <?php }?>
                 </tr>
             </table>
         </div>

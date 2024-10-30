@@ -1,6 +1,12 @@
+
+<?php 
+include('layouts/header.php');
+
+?>
+
+
 <?php
 date_default_timezone_set('Asia/Ho_Chi_Minh');
-session_start();
 
 if(isset($_POST['order_pay_btn'])) {
     $order_status = $_POST['order_status'];
@@ -11,11 +17,6 @@ if(isset($_POST['order_pay_btn'])) {
 
 
 
-
-<?php 
-include('layouts/header.php');
-
-?>
 
 
 

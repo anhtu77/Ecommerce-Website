@@ -1,6 +1,13 @@
+
+
+<?php 
+include('layouts/header.php');
+
+?>
+
 <?php
 
-session_start();
+
 
 include('server/connection.php');
 
@@ -76,11 +83,6 @@ if(isset($_POST['login_btn'])) {
 
 
 
-
-<?php 
-include('layouts/header.php');
-
-?>
 
 
 

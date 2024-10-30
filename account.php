@@ -1,6 +1,12 @@
+
+<?php 
+include('layouts/header.php');
+
+?>
+
+
 <?php
 date_default_timezone_set('Asia/Ho_Chi_Minh');
-session_start();
 include('server/connection.php');
 
 if(!isset($_SESSION['logged_in'])){
@@ -79,11 +85,6 @@ if(isset($_SESSION['logged_in'])){
 
 
 
-
-<?php 
-include('layouts/header.php');
-
-?>
 
 
 
