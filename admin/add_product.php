@@ -43,6 +43,10 @@
                         <option value="clothes">Clothes</option>
                     </select>
                 </div>
+                <div class="form-group mt-2">
+                    <label>Stock</label>
+                    <input type="number" class="form-control" id="product-stock" name="stock" placeholder="Stock Quantity" required>
+                </div>
 
                 <div class="form-group mt-2">
                     <label>Color</label>

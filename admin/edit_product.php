@@ -23,7 +23,7 @@ if (isset($_GET['product_id'])) {
   }
 } elseif (isset($_POST['edit_btn'])) {
   // Kiểm tra nếu tất cả các dữ liệu POST đã được gửi
-  if (isset($_POST['product_id'], $_POST['title'], $_POST['description'], $_POST['price'], $_POST['offer'], $_POST['color'], $_POST['category'])) {
+  if (isset($_POST['product_id'], $_POST['title'], $_POST['description'], $_POST['price'], $_POST['offer'], $_POST['color'], $_POST['category'],$_POST['stock'])) {
       // Cập nhật thông tin sản phẩm
       $product_id = $_POST['product_id'];
       $title = $_POST['title'];
@@ -32,9 +32,10 @@ if (isset($_GET['product_id'])) {
       $offer = $_POST['offer'];
       $color = $_POST['color'];
       $category = $_POST['category'];
+      $stock = $_POST['stock'];
+      $stmt = $conn->prepare("UPDATE products SET product_name=?, product_description=?, product_price=?, product_special_offer=?, product_color=?, product_category=?, product_stock=? WHERE product_id=?");
+      $stmt->bind_param('ssssssii', $title, $description, $price, $offer, $color, $category, $stock, $product_id);
       
-      $stmt = $conn->prepare("UPDATE products SET product_name=?, product_description=?, product_price=?, product_special_offer=?, product_color=?, product_category=? WHERE product_id=?");
-      $stmt->bind_param('ssssssi', $title, $description, $price, $offer, $color, $category, $product_id);
       
       if ($stmt->execute()) {
         echo "<script>
@@ -92,6 +93,10 @@ if (isset($_GET['product_id'])) {
                                   <option value="watches" <?php echo ($product['product_category'] == 'watches') ? 'selected' : ''; ?>>Watches</option>
                                   <option value="clothes" <?php echo ($product['product_category'] == 'clothes') ? 'selected' : ''; ?>>Clothes</option>
                               </select>
+                          </div>
+                          <div class="form-group mt-2">
+                              <label>Stock</label>
+                              <input type="text" class="form-control" value="<?php echo $product['product_stock']; ?>" name="stock" required>
                           </div>
                           <div class="form-group mt-2">
                               <label>Color</label>

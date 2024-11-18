@@ -70,9 +70,10 @@ include('layouts/header.php');
                 <button class="buy-btn" type="submit" name="add_to_cart">Add To Cart</button>
           </form>
 
-               
+                <h4 class="mt-5 mb-5">Stock Product :<?php echo $row['product_stock']; ?></h4>
+
                 <h4 class="mt-5 mb-5">Product details</h4>
-                <span><?php echo $row['product_description']; ?>
+                <span>  <?php echo $row['product_description']; ?>
 
                 </span>
             </div>

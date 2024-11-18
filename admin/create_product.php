@@ -8,6 +8,7 @@ if(isset($_POST['create_product'])) {
     $product_special_offer = $_POST['offer'];
     $product_category = $_POST['category'];
     $product_color = $_POST['color'];
+    $product_stock = $_POST['stock'];
 
     $image1 =$_FILES['image1']['tmp_name'];
     $image2 =$_FILES['image2']['tmp_name'];
@@ -27,15 +28,17 @@ if(isset($_POST['create_product'])) {
     move_uploaded_file($image4,"../assets/imgs/".$image_name4);
 
 
-    $stmt = $conn->prepare("INSERT INTO products    (product_name, product_description, product_price,product_special_offer,
-                                                    product_image, product_image2, product_image3, product_image4,
-                                                    product_category, product_color)
-                                                    VALUE (?,?,?,?,?,?,?,?,?,?)");
+    $stmt = $conn->prepare("INSERT INTO products 
+    (product_name, product_description, product_price, product_special_offer,
+     product_image, product_image2, product_image3, product_image4,
+     product_category, product_color, product_stock)
+    VALUES (?,?,?,?,?,?,?,?,?,?,?)");
 
-    $stmt->bind_param('ssssssssss', $product_name, $product_description, $product_price, $product_special_offer,
-                                    $image_name1,$image_name2,$image_name3,$image_name4, $product_category, $product_color);
+    $stmt->bind_param('ssssssssssi', $product_name, $product_description, $product_price, 
+            $product_special_offer, $image_name1, $image_name2, $image_name3, 
+            $image_name4, $product_category, $product_color, $product_stock);
 
-     
+
         if ($stmt->execute()) {
             echo "<script>
             alert('Product has been created successfully.');

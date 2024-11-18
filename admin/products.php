@@ -64,6 +64,7 @@
                         <th scope="col">Product Id</th>
                         <th scope="col">Product Image</th>
                         <th scope="col">Product Name</th>
+                        <th scope="col">Product Stock</th>
                         <th scope="col">Product Price</th>
                         <th scope="col">Product Offer</th>
                         <th scope="col">Product Category</th>
@@ -82,6 +83,7 @@
                             <img src="<?php echo "../assets/imgs/". $product['product_image']; ?>" style="width: 70px; height:70px;"/>
                         </td>
                         <td><?php echo $product['product_name']; ?></td>
+                        <td><?php echo $product['product_stock']; ?></td>
                         <td><?php echo "$".$product['product_price']; ?></td>
                         <td><?php echo $product['product_special_offer']."%"; ?></td>
                         <td><?php echo $product['product_category']; ?></td>
