@@ -124,8 +124,8 @@ include('layouts/header.php');
                   </div>
 
                   <div class="form-check">
-                      <input class="form-check-input" value="coats" type="radio" name="category" id="category_coats" <?php if (isset($category) && $category == 'coats') { echo 'checked'; } ?>>
-                      <label class="form-check-label" for="category_coats">Coats</label>
+                      <input class="form-check-input" value="clothes" type="radio" name="category" id="category_coats" <?php if (isset($category) && $category == 'clothes') { echo 'checked'; } ?>>
+                      <label class="form-check-label" for="category_coats">Clothes</label>
                   </div>
 
                   <div class="form-check">
@@ -190,7 +190,7 @@ include('layouts/header.php');
           <i class="fas fa-star"></i>
         </div>
         <h5 class="p-name"><?php echo $row['product_name']; ?></h5>
-        <h4 class="p-price"><?php echo $row['product_price']; ?></h4>
+        <h4 class="p-price"><?php echo $row['product_price']." $"; ?></h4>
         <a class="btn shop-buy-btn" href="<?php echo "single_product.php?product_id=".$row['product_id']; ?>">Buy Now</a>
       </div>
 

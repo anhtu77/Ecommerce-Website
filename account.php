@@ -143,24 +143,20 @@ if(isset($_SESSION['logged_in'])){
 
         <table class="mt-5 pt-5">
             <tr>
-                <th>Order id</th>
-                <th>Order cost</th>
-                <th>Order status</th>
-                <th>Order Date</th>
-                <th>Order details</th>
+                <th>STT</th>
+                <th>Cost</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Details</th>
             </tr>
 
-
-            <?php while($row = $orders->fetch_assoc()){ ?>
+            <?php
+                // Khởi tạo biến đếm số thứ tự
+                $order_number = 1;
+                while($row = $orders->fetch_assoc()){ ?>
                     <tr>
                         <td>
-                            <!-- <div class="product-info">
-                                <img src="assets/imgs/featured1.png" />
-                                <div>
-                                    <p class="mt-3"><?php echo $row['order_id']; ?></p>
-                                </div>
-                            </div> -->
-                            <span><?php echo $row['order_id']; ?></span>
+                            <span><?php echo $order_number; ?></span> <!-- Hiển thị số thứ tự -->
                         </td>
 
                         <td>
@@ -182,10 +178,12 @@ if(isset($_SESSION['logged_in'])){
                                 <input class="btn order-details-btn" name="order_details_btn" type="submit" value="details">
                             </form>
                         </td>
-
                     </tr>
-
-            <?php } ?>
+            <?php 
+    // Tăng số thứ tự lên 1 sau mỗi dòng
+    $order_number++;
+} 
+?>
 
 
 

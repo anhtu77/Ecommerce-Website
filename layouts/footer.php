@@ -34,11 +34,7 @@
         <div class="footer-one col-lg-3 col-md-6 col-sm-12">
           <h5 class="pb-2">Instagram</h5>
           <div class="row">
-            <img src="assets/imgs/footer1.jpeg" class="img-fluid w-25 h-100 m-2">
-            <img src="assets/imgs/footer1.jpeg" class="img-fluid w-25 h-100 m-2">
-            <img src="assets/imgs/footer1.jpeg" class="img-fluid w-25 h-100 m-2">
-            <img src="assets/imgs/footer1.jpeg" class="img-fluid w-25 h-100 m-2">
-            <img src="assets/imgs/footer1.jpeg" class="img-fluid w-25 h-100 m-2">
+           
           </div>
         </div>
 
