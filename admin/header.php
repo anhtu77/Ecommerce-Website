@@ -3,9 +3,9 @@ date_default_timezone_set('Asia/Ho_Chi_Minh');
 session_start(); 
 ?>
 <?php 
-if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'admin') {
-  header('Location: ../login.php');
-  exit;
+if(!isset($_SESSION['admin_logged_in'])){
+      header('location:login.php');
+      exit;
 }
 ?>
 
@@ -64,7 +64,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'admin') {
         <div class="sidebar-logo">
           <!-- Logo Header -->
           <div class="logo-header" data-background-color="dark">
-            <a href="admin_dashboard.php" class="logo">
+            <a href="index.php" class="logo">
               <img
                 src="assets/img/kaiadmin/logo_light.svg"
                 alt="navbar brand"
@@ -102,7 +102,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'admin') {
                 </a>
                 <div class="collapse" id="dashboard">
                   <ul class="nav nav-collapse">
-                      <a href="admin_dashboard.php">
+                      <a href="index.php">
                         <span class="sub-item">Orders</span>
                       </a>
                       <a href="products.php">
@@ -142,7 +142,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'admin') {
           <div class="main-header-logo">
             <!-- Logo Header -->
             <div class="logo-header" data-background-color="dark">
-              <a href="admin_dashbroard.php" class="logo">
+              <a href="index.php" class="logo">
                 <img
                   src="assets/img/kaiadmin/logo_light.svg"
                   alt="navbar brand"
@@ -243,7 +243,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'admin') {
                     
                       
                      
-                      <?php if(isset($_SESSION['logged_in']) && $_SESSION['role'] === 'admin'){ ?>
+                        <?php if(isset($_SESSION['admin_logged_in'])){ ?>
                         <a class="dropdown-item" href="../admin/logout.php?logout=1">Logout</a>
                         <?php } ?>
                       </li>

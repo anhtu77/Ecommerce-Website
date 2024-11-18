@@ -1,36 +1,37 @@
-<?php
-session_start();
-include('../server/connection.php');
+<?php 
 
-// Kiểm tra nếu người dùng chưa đăng nhập hoặc không có quyền admin
-if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'admin') {
-    header('location: ../login.php');
-    exit;
-}
+    session_start(); 
 
-// Xử lý yêu cầu xóa sản phẩm
-if (isset($_GET['product_id'])) {
-    $product_id = $_GET['product_id'];
+    include('../server/connection.php');
 
-    // Chuẩn bị và thực hiện câu truy vấn
-    $stmt = $conn->prepare("DELETE FROM products WHERE product_id = ?");
-    $stmt->bind_param('i', $product_id);
+?>
 
-    if ($stmt->execute()) {
-        echo "<script>
-                alert('Sản phẩm đã được xóa thành công.');
-                window.location.href = 'products.php';
-              </script>";
-    } else {
-        echo "<script>
-                alert('Đã xảy ra lỗi, vui lòng thử lại.');
-                window.location.href = 'products.php';
-              </script>";
-    }
-    
-    // Đóng chuẩn bị truy vấn và kết nối cơ sở dữ liệu
-    $stmt->close();
-    $conn->close();
-    exit;
-}
+
+<?php 
+        if(!isset($_SESSION['admin_logged_in'])){
+            header('location:login.php');
+            exit;
+        }
+        
+        if(isset($_GET['product_id'])) {
+                $product_id = $_GET['product_id'];
+                $stmt = $conn->prepare("DELETE FROM products WHERE product_id=? ");
+                $stmt->bind_param('i',$product_id);
+                if ($stmt->execute()) {
+                    echo "<script>
+                            alert('Product has been deleted successfully.');
+                            window.location.href = 'products.php';
+                          </script>";
+                    exit;
+                  } else {
+                    echo "<script>
+                            alert('Error occurred, try again.');
+                            window.location.href = 'products.php';
+                          </script>";
+                    exit;
+                  }
+        }
+
+
+
 ?>
