@@ -69,6 +69,7 @@
                         <th scope="col">Product Category</th>
                         <th scope="col">Product Color</th>
                         <th scope="col">Edit Images</th>
+                        <th scope="col">Detail</th>
                         <th scope="col">Edit</th>
                         <th scope="col">Delete</th>
                         
@@ -87,6 +88,7 @@
                         <td><?php echo $product['product_category']; ?></td>
                         <td><?php echo $product['product_color']; ?></td>
                         <td><a class="btn btn-warning" href="<?php echo "edit_images.php?product_id=".$product['product_id']."&product_name=".$product['product_name'];?>">Edit</a></td>
+                        <td><a class="btn btn-primary" href="detail_product.php?product_id=<?php echo $product['product_id'];?>">Detail</a></td>
                         <td><a class="btn btn-primary" href="edit_product.php?product_id=<?php echo $product['product_id'];?>">Edit</a></td>
                         <td><a class="btn btn-danger"  href="delete_product.php?product_id=<?php echo $product['product_id']; ?>">Delete</a></td>
                       </tr>

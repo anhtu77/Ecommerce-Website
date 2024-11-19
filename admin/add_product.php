@@ -1,10 +1,19 @@
-<?php 
+<?php  
 include('header.php'); 
 
-
-// Lấy danh sách categories để người dùng chọn loại sản phẩm
+// Kết nối cơ sở dữ liệu và lấy danh sách categories
 $categories_result = $conn->query("SELECT * FROM categories");
 
+// Lấy danh sách sizes (các kích thước có sẵn)
+$sizes_result = $conn->query("SELECT * FROM sizes");
+
+// Tạo danh sách kích thước dưới dạng JSON
+$sizes = [];
+if ($sizes_result->num_rows > 0) {
+    while ($size = $sizes_result->fetch_assoc()) {
+        $sizes[] = $size;
+    }
+}
 ?>
 
 <div class="container">
@@ -16,6 +25,7 @@ $categories_result = $conn->query("SELECT * FROM categories");
             <div class="mx-auto container">
                 <form method="POST" action="create_product.php" enctype="multipart/form-data">
 
+                    <!-- Các thông tin cơ bản của sản phẩm -->
                     <div class="form-group mt-2">
                         <label for="product-name">Product Name</label>
                         <input type="text" class="form-control" id="product-name" name="product_name" placeholder="Product Name" required>
@@ -38,27 +48,42 @@ $categories_result = $conn->query("SELECT * FROM categories");
                             <?php 
                             if ($categories_result->num_rows > 0) {
                                 while ($category = $categories_result->fetch_assoc()) {
-                                    // Lưu category_name vào value của option
                                     echo "<option value='{$category['category_name']}'>{$category['category_name']}</option>";
                                 }
                             }
                             ?>
                         </select>
                     </div>
-                    
 
-
+                    <!-- Các thông tin về kích thước và số lượng -->
                     <div class="form-group mt-2">
-                        <label for="product-size">Size</label>
-                        <input type="text" class="form-control" id="product-size" name="product_size" placeholder="Size" required>
+                        <label for="product-size">Size and Stock</label>
+                        <div id="size-container">
+                            <div class="size-item d-flex align-items-center gap-3">
+                                <label class="form-label">Size:</label>
+                                <select class="form-control size-select" name="size_ids[]" required>
+                                    <option value="">Select Size</option>
+                                    <?php 
+                                    foreach ($sizes as $size) {
+                                        echo "<option value='{$size['size_id']}'>{$size['size_name']}</option>";
+                                    }
+                                    ?>
+                                </select>
+                                
+                                <label class="form-label ms-3">Stock:</label>
+                                <input type="number" class="form-control stock-input" name="stocks[]" placeholder="Stock Quantity" required>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-link mt-2" id="add-size-btn">Add Size</button>
                     </div>
 
-
+                    <!-- Ô nhập tổng số lượng -->
                     <div class="form-group mt-2">
-                        <label for="product-stock">Stock</label>
-                        <input type="number" class="form-control" id="product-stock" name="product_stock" placeholder="Stock Quantity" required>
+                        <label for="product_stock">Total Stock:</label>
+                        <input type="number" class="form-control" id="product_stock" name="product_stock" placeholder="Total Stock" readonly>
                     </div>
 
+                    <!-- Thông tin màu sắc và hình ảnh -->
                     <div class="form-group mt-2">
                         <label for="product-color">Color</label>
                         <input type="text" class="form-control" id="product-color" name="product_color" placeholder="Color" required>
@@ -96,17 +121,42 @@ $categories_result = $conn->query("SELECT * FROM categories");
 
 <footer class="footer"></footer>
 
-<!-- Custom template -->
-<div class="custom-template">
-    <div class="title">Settings</div>
-    <div class="custom-content">
-        <!-- Add your custom settings here if needed -->
-    </div>
-</div>
+<script>
+    const sizes = <?php echo json_encode($sizes); ?>;
 
-<script src="assets/js/core/jquery-3.7.1.min.js"></script>
-<script src="assets/js/core/popper.min.js"></script>
-<script src="assets/js/core/bootstrap.min.js"></script>
+    // Hàm cập nhật tổng số lượng
+    function updateTotalStock() {
+        let totalStock = 0;
+        document.querySelectorAll('.stock-input').forEach(input => {
+            const value = parseInt(input.value) || 0;
+            totalStock += value;
+        });
+        document.getElementById('product_stock').value = totalStock;
+    }
 
-</body>
-</html>
+    // Thêm size mới
+    document.getElementById('add-size-btn').addEventListener('click', function() {
+        const sizeContainer = document.getElementById('size-container');
+        const newSizeItem = document.createElement('div');
+        newSizeItem.classList.add('size-item', 'd-flex', 'align-items-center', 'gap-3');
+        newSizeItem.innerHTML = `
+            <label class="form-label">Size:</label>
+            <select class="form-control size-select" name="size_ids[]" required>
+                ${sizes.map(size => `<option value="${size.size_id}">${size.size_name}</option>`).join('')}
+            </select>
+            <label class="form-label ms-3">Stock:</label>
+            <input type="number" class="form-control stock-input" name="stocks[]" placeholder="Stock Quantity" required>
+        `;
+        sizeContainer.appendChild(newSizeItem);
+
+        // Gắn sự kiện lắng nghe
+        newSizeItem.querySelector('.stock-input').addEventListener('input', updateTotalStock);
+    });
+
+    // Cập nhật tổng số lượng khi thay đổi
+    document.getElementById('size-container').addEventListener('input', function(e) {
+        if (e.target.classList.contains('stock-input')) {
+            updateTotalStock();
+        }
+    });
+</script>
