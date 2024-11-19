@@ -1,61 +1,130 @@
 <?php include('header.php'); ?>
 
-<?php 
-if(isset($_GET['product_id'])){
 
-    $product_id = $_GET['product_id'];
-    $product_name = $_GET['product_name'];
-}else{
-    header('location: products.php');
-}
+
+<?php 
+
+
+ 
+  if(isset($_GET['page_no']) && $_GET['page_no'] != "") {
+  
+    $page_no = $_GET['page_no'];
+  }else{
+   
+    $page_no = 1;
+  }
+
+  
+  $stmt1 = $conn->prepare("SELECT COUNT(*) AS total_records FROM categories");
+  $stmt1->execute();
+  $stmt1->bind_result($total_records);
+  $stmt1->store_result();
+  $stmt1->fetch();
+
+  $total_records_per_page = 10;
+
+  $offset = ($page_no-1) * $total_records_per_page;
+
+  $previous_page = $page_no - 1;
+
+  $next_page = $page_no + 1;
+
+  $adjacents ="2";
+
+  $total_no_of_pages = ceil($total_records/$total_records_per_page);
+
+
+  $stmt2 = $conn->prepare("SELECT * FROM categories LIMIT $offset,$total_records_per_page");
+  $stmt2->execute();
+  $categories = $stmt2->get_result();
+  
 
 
 
 ?>
 
-<div class="container">
-  <div class="page-inner">
-      <h3 class="fw-bold mb-3">Dashboard</h3>
-      <h6 class="op-7 mb-2">Edit Images</h6>
-      
-    <div class="table-responsive">
-      <div class="mx-auto container">
-        <form id="edit-image-form" enctype="multipart/form-data" method="POST" action="update_images.php">
-          <p style="color: red;"> <?php if(isset($_GET['error'])) { echo $_GET['error']; } ?></p>
+        <div class="container">
+          <div class="page-inner">
+            <div
+              class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4"
+            >
+              <div>
 
-          <input type="hidden" name="product_id" value="<?php echo $product_id;?>">
-          <input type="hidden" name="product_name" value="<?php echo $product_name;?>">
+                <h3 class="fw-bold mb-3">Dashboard</h3>
+                <h6 class="op-7 mb-2">categories</h6>
+              </div>
+              
+            </div>
+            <div class="table-responsive">
+                  <table class="table table-striped table-sm">
+                    <thead>
+                      <tr>
+                        <th scope="col">Category Id</th>
+                        <th scope="col">Category Name</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php foreach($categories as $category){ ?>
+                      <tr>
+                        <td><?php echo $category['category_id']; ?></td>
+                        <td><?php echo $category['category_name']; ?></td>
+                        <td><a class="btn btn-primary" href="edit_category.php?category_id=<?php echo $category['category_id'];?>">Edit</a></td>
+                        <td><a class="btn btn-danger"  href="delete_category.php?category_id=<?php echo $category['category_id']; ?>">Delete</a></td>
+                      </tr>
 
-          <div class="form-group mt-2">
-            <label>Image 1</label>
-            <input type="file" class="form-control" id="image1" name="image1" placeholder="Image 1" required>
+                      <?php } ?>
+                    </tbody>
+
+                  </table>
+           
+
+                    <nav aria-label="Page navigation example" class="mx-auto">
+                          <ul class="pagination mt-5 mx-auto">
+                      
+                                  <li class="page-item <?php if($page_no <= 1) {echo 'disabled';} ?>">
+                                      <a class="page-link" href="<?php if($page_no <= 1) {echo '#';} else {echo "?page_no=".($page_no-1);} ?>">Previous</a>
+                                  </li>
+
+                                  <li class="page-item <?php if($page_no == 1) {echo 'active';} ?>">
+                                      <a class="page-link" href="?page_no=1">1</a>
+                                  </li>
+                                  <li class="page-item <?php if($page_no == 2) {echo 'active';} ?>">
+                                      <a class="page-link" href="?page_no=2">2</a>
+                                  </li>
+
+                                  <?php if($page_no >= 3 && $page_no < $total_no_of_pages) { ?>
+                                      <li class="page-item">
+                                      </li>
+                                      <li class="page-item <?php if($page_no == $page_no) {echo 'active';} ?>">
+                                          <a class="page-link" href="<?php echo "?page_no=".$page_no; ?>"><?php echo $page_no; ?></a>
+                                      </li>
+                                  <?php } ?>
+
+
+
+                                  <li class="page-item"><a class="page-link" href="#">...</a></li>
+                                  <li class="page-item <?php if($page_no == $total_no_of_pages) {echo 'active';} ?>">
+                                      <a class="page-link" href="?page_no=<?php echo $total_no_of_pages; ?>"><?php echo $total_no_of_pages; ?></a>
+                                  </li>
+
+                                  <li class="page-item <?php if($page_no >= $total_no_of_pages) {echo 'disabled';} ?>">
+                                      <a class="page-link" href="<?php if($page_no >= $total_no_of_pages) {echo '#';} else {echo "?page_no=".($page_no+1);} ?>">Next</a>
+                                  </li>
+                                  
+                      <!-- Hiển thị trang cuối cùng -->
+                      
+                            </ul>
+
+              
+                    </nav>
+                </div>
+           
           </div>
-
-          <div class="form-group mt-2">
-            <label>Image 2</label>
-            <input type="file" class="form-control" id="image2" name="image2" placeholder="Image 2" required>
-          </div>
-
-          <div class="form-group mt-2">
-            <label>Image 3</label>
-            <input type="file" class="form-control" id="image3" name="image3" placeholder="Image 3" required>
-          </div>
-
-          <div class="form-group mt-2">
-            <label>Image 4</label>
-            <input type="file" class="form-control" id="image4" name="image4" placeholder="Image 4" required>
-          </div>
-
-          <div class="form-group mt-3">
-            <input type="submit" class="btn btn-primary" name="update_images" value="Update">
-          </div>
-
-        </form>
-      </div>
-    </div>
-  </div> 
-</div>
-
+        </div>
+        
 
    
 

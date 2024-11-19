@@ -1,4 +1,7 @@
-<?php include('header.php'); ?>
+<?php include('header.php'); 
+// Lấy danh sách categories để người dùng chọn loại sản phẩm
+$categories_result = $conn->query("SELECT * FROM categories"); ?>
+
 
 <?php 
 if ($conn->connect_error) {
@@ -7,6 +10,7 @@ if ($conn->connect_error) {
 
 if (isset($_GET['product_id'])) {
   $product_id = $_GET['product_id'];
+  
   
   // Truy vấn sản phẩm dựa trên product_id
   $stmt = $conn->prepare("SELECT * FROM products WHERE product_id = ?");
@@ -23,18 +27,17 @@ if (isset($_GET['product_id'])) {
   }
 } elseif (isset($_POST['edit_btn'])) {
   // Kiểm tra nếu tất cả các dữ liệu POST đã được gửi
-  if (isset($_POST['product_id'], $_POST['title'], $_POST['description'], $_POST['price'], $_POST['offer'], $_POST['color'], $_POST['category'],$_POST['stock'])) {
+  if (isset($_POST['product_id'], $_POST['title'], $_POST['description'], $_POST['price'], $_POST['color'], $_POST['category'],$_POST['stock'])) {
       // Cập nhật thông tin sản phẩm
       $product_id = $_POST['product_id'];
       $title = $_POST['title'];
       $description = $_POST['description'];
       $price = $_POST['price'];
-      $offer = $_POST['offer'];
       $color = $_POST['color'];
       $category = $_POST['category'];
       $stock = $_POST['stock'];
-      $stmt = $conn->prepare("UPDATE products SET product_name=?, product_description=?, product_price=?, product_special_offer=?, product_color=?, product_category=?, product_stock=? WHERE product_id=?");
-      $stmt->bind_param('ssssssii', $title, $description, $price, $offer, $color, $category, $stock, $product_id);
+      $stmt = $conn->prepare("UPDATE products SET product_name=?, product_description=?, product_price=?, product_color=?, product_category=?, product_stock=? WHERE product_id=?");
+      $stmt->bind_param('sssssii', $title, $description, $price, $color, $category, $stock, $product_id);
       
       
       if ($stmt->execute()) {
@@ -86,14 +89,21 @@ if (isset($_GET['product_id'])) {
                               <input type="text" class="form-control" value="<?php echo $product['product_price']; ?>" name="price" required>
                           </div>
                           <div class="form-group mt-2">
-                              <label>Category</label>
-                              <select class="form-select" name="category" required>
-                                  <option value="bags" <?php echo ($product['product_category'] == 'bags') ? 'selected' : ''; ?>>Bags</option>
-                                  <option value="shoes" <?php echo ($product['product_category'] == 'shoes') ? 'selected' : ''; ?>>Shoes</option>
-                                  <option value="watches" <?php echo ($product['product_category'] == 'watches') ? 'selected' : ''; ?>>Watches</option>
-                                  <option value="clothes" <?php echo ($product['product_category'] == 'clothes') ? 'selected' : ''; ?>>Clothes</option>
+                              <label for="category_id">Category</label>
+                              <select class="form-control" id="category_id" name="category" required>
+                                  <option value="">Select Category</option>
+                                  <?php 
+                                  if ($categories_result->num_rows > 0) {
+                                      while ($category = $categories_result->fetch_assoc()) {
+                                          // Kiểm tra nếu danh mục hiện tại khớp với giá trị trong sản phẩm
+                                          $selected = ($category['category_name'] == $product['product_category']) ? 'selected' : '';
+                                          echo "<option value='{$category['category_name']}' $selected>{$category['category_name']}</option>";
+                                      }
+                                  }
+                                  ?>
                               </select>
                           </div>
+
                           <div class="form-group mt-2">
                               <label>Stock</label>
                               <input type="text" class="form-control" value="<?php echo $product['product_stock']; ?>" name="stock" required>
@@ -102,12 +112,9 @@ if (isset($_GET['product_id'])) {
                               <label>Color</label>
                               <input type="text" class="form-control" value="<?php echo $product['product_color']; ?>" name="color" required>
                           </div>
-                          <div class="form-group mt-2">
-                              <label>Special Offer/Sale</label>
-                              <input type="number" class="form-control" value="<?php echo $product['product_special_offer']; ?>" name="offer" required>
-                          </div>
+                          
                           <div class="form-group mt-3">
-                              <input type="submit" class="btn btn-primary" name="edit_btn" value="edit">
+                              <input type="submit" class="btn btn-primary" name="edit_btn" value="Edit">
                           </div>
                       <?php endforeach; ?>
                   <?php else : ?>

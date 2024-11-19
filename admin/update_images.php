@@ -19,10 +19,10 @@ if(isset($_POST['update_images'])) {
     $image_name3 = $product_name."3.jpeg";
     $image_name4 = $product_name."4.jpeg";
 
-    move_uploaded_file($image1,"../assets/imgs/".$image_name1);
-    move_uploaded_file($image2,"../assets/imgs/".$image_name2);
-    move_uploaded_file($image3,"../assets/imgs/".$image_name3);
-    move_uploaded_file($image4,"../assets/imgs/".$image_name4);
+    move_uploaded_file($image1,"../assets/images/".$image_name1);
+    move_uploaded_file($image2,"../assets/images/".$image_name2);
+    move_uploaded_file($image3,"../assets/images/".$image_name3);
+    move_uploaded_file($image4,"../assets/images/".$image_name4);
 
     $stmt = $conn->prepare("UPDATE products SET product_image=?, product_image2=?, product_image3=?, product_image4=? WHERE product_id=? ");
     $stmt->bind_param('ssssi',$image_name1,$image_name2,$image_name3,$image_name4,$product_id);

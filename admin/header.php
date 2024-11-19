@@ -111,6 +111,12 @@ if(!isset($_SESSION['admin_logged_in'])){
                       <a href="add_product.php">
                         <span class="sub-item">Add Product</span>
                       </a>
+                      <a href="categories.php">
+                        <span class="sub-item">Category</span>
+                      </a>
+                      <a href="add_category.php">
+                        <span class="sub-item">Add category</span>
+                      </a>
                       <a href="users.php">
                         <span class="sub-item">Users</span>
                       </a>

@@ -66,7 +66,6 @@
                         <th scope="col">Product Name</th>
                         <th scope="col">Product Stock</th>
                         <th scope="col">Product Price</th>
-                        <th scope="col">Product Offer</th>
                         <th scope="col">Product Category</th>
                         <th scope="col">Product Color</th>
                         <th scope="col">Edit Images</th>
@@ -80,12 +79,11 @@
                       <tr>
                         <td><?php echo $product['product_id']; ?></td>
                         <td>
-                            <img src="<?php echo "../assets/imgs/". $product['product_image']; ?>" style="width: 70px; height:70px;"/>
+                            <img src="<?php echo "../assets/images/". $product['product_image']; ?>" style="width: 70px; height:70px;"/>
                         </td>
                         <td><?php echo $product['product_name']; ?></td>
                         <td><?php echo $product['product_stock']; ?></td>
                         <td><?php echo "$".$product['product_price']; ?></td>
-                        <td><?php echo $product['product_special_offer']."%"; ?></td>
                         <td><?php echo $product['product_category']; ?></td>
                         <td><?php echo $product['product_color']; ?></td>
                         <td><a class="btn btn-warning" href="<?php echo "edit_images.php?product_id=".$product['product_id']."&product_name=".$product['product_name'];?>">Edit</a></td>
