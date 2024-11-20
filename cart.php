@@ -1,90 +1,103 @@
-<?php 
+<?php  
+session_start();
 include('layouts/header.php');
 
-if(!isset($_SESSION['logged_in'])){
-  header('location: login.php');
-  exit;
+// Kiểm tra đăng nhập
+if (!isset($_SESSION['logged_in'])) {
+    header('location: login.php');
+    exit;
 }
 
-if(isset($_POST['add_to_cart'])){
+// Thêm sản phẩm vào giỏ hàng
+if (isset($_POST['add_to_cart'])) {
+    $product_id = intval($_POST['product_id']);
+    $product_quantity = intval($_POST['product_quantity']);
+    $size_name = $_POST['size_name']; // Lấy tên size trực tiếp
 
-  $product_id = intval($_POST['product_id']);
-  $product_quantity = intval($_POST['product_quantity']);
+    // Tạo khóa duy nhất cho sản phẩm theo product_id và size_name
+    $product_key = $product_id . "_" . $size_name;
 
-  // Nếu giỏ hàng đã tồn tại
-  if(isset($_SESSION['cart'])){
-
-    $products_array_ids = array_column($_SESSION['cart'], "product_id");
-    if(!in_array($product_id, $products_array_ids)){
-
-      $product_array = array(
-        'product_id' => $product_id,
-        'product_name' => $_POST['product_name'],
-        'product_price' => $_POST['product_price'],
-        'product_image' => $_POST['product_image'],
-        'product_quantity' => $product_quantity
-      );
-  
-      $_SESSION['cart'][$product_id] = $product_array;
-
-    } else {
-      echo '<script>alert("Product is already in the cart");</script>';
+    // Nếu giỏ hàng đã tồn tại
+    if (isset($_SESSION['cart'])) {
+        if (!isset($_SESSION['cart'][$product_key])) {
+            // Thêm sản phẩm mới vào giỏ
+            $product_array = array(
+                'product_id' => $product_id,
+                'product_name' => $_POST['product_name'],
+                'product_price' => $_POST['product_price'],
+                'product_image' => $_POST['product_image'],
+                'product_quantity' => $product_quantity,
+                'size_name' => $size_name
+            );
+            $_SESSION['cart'][$product_key] = $product_array;
+        } else {
+            // Nếu sản phẩm đã có trong giỏ hàng, cộng thêm số lượng
+            $_SESSION['cart'][$product_key]['product_quantity'] += $product_quantity; // Cộng thêm số lượng
+        }
+    } else { 
+        // Nếu đây là sản phẩm đầu tiên
+        $product_array = array(
+            'product_id' => $product_id,
+            'product_name' => $_POST['product_name'],
+            'product_price' => $_POST['product_price'],
+            'product_image' => $_POST['product_image'],
+            'product_quantity' => $product_quantity,
+            'size_name' => $size_name
+        );
+        $_SESSION['cart'][$product_key] = $product_array;
     }
 
-  } else { // Nếu đây là sản phẩm đầu tiên
-    $product_array = array(
-      'product_id' => $product_id,
-      'product_name' => $_POST['product_name'],
-      'product_price' => $_POST['product_price'],
-      'product_image' => $_POST['product_image'],
-      'product_quantity' => $product_quantity
-    );
+    calculateTotalCart();
+}
 
-    $_SESSION['cart'][$product_id] = $product_array;
-  }
+// Xóa sản phẩm khỏi giỏ hàng
+if (isset($_POST['remove_product'])) {
+    $product_key = $_POST['product_key']; // Dùng product_key để xác định sản phẩm cần xóa
+    unset($_SESSION['cart'][$product_key]);
+    calculateTotalCart();
+}
 
-  calculateTotalCart();
-} 
+// Cập nhật số lượng và size sản phẩm
+if (isset($_POST['edit_quantity'])) {
+    $product_key = $_POST['product_key']; // Lấy product_key từ form
+    $product_quantity = intval($_POST['product_quantity']);
+    $size_name = $_POST['size_name'];
 
-// Xóa sản phẩm khỏi giỏ
-else if(isset($_POST['remove_product'])){
+    // Cập nhật số lượng và size
+    if ($product_quantity > 0) {
+        $_SESSION['cart'][$product_key]['product_quantity'] = $product_quantity;
+    }
+    if (!empty($size_name)) {
+        $_SESSION['cart'][$product_key]['size_name'] = $size_name;
+    }
 
-  $product_id = intval($_POST['product_id']);
-  unset($_SESSION['cart'][$product_id]);
-  calculateTotalCart();
-
-} 
-
-// Cập nhật số lượng sản phẩm trong giỏ
-else if(isset($_POST['edit_quantity'])){
-
-  $product_id = intval($_POST['product_id']);
-  $product_quantity = intval($_POST['product_quantity']);
-
-  // Cập nhật số lượng sản phẩm
-  if($product_quantity > 0) {
-    $_SESSION['cart'][$product_id]['product_quantity'] = $product_quantity;
-  }
-
-  calculateTotalCart();
+    calculateTotalCart();
 }
 
 // Hàm tính tổng giỏ hàng
-function calculateTotalCart(){
-  $total_price = 0;
-  $total_quantity = 0;
+function calculateTotalCart() {
+    $total_price = 0;
+    $total_quantity = 0;
 
-  if(isset($_SESSION['cart'])) {
-    foreach($_SESSION['cart'] as $product) {
-      $total_price += $product['product_price'] * $product['product_quantity'];
-      $total_quantity += $product['product_quantity'];
+    if (isset($_SESSION['cart'])) {
+        foreach ($_SESSION['cart'] as $product) {
+            $price = isset($product['product_price']) ? $product['product_price'] : 0;
+            $quantity = isset($product['product_quantity']) ? $product['product_quantity'] : 0;
+
+            $total_price += $price * $quantity;
+            $total_quantity += $quantity;
+        }
     }
-  }
 
-  $_SESSION['total'] = $total_price;
-  $_SESSION['quantity'] = $total_quantity;
+    // Nếu giỏ hàng trống, đảm bảo tổng = 0
+    if ($total_price == 0) {
+        $_SESSION['total'] = 0;
+        $_SESSION['quantity'] = 0;
+    } else {
+        $_SESSION['total'] = $total_price;
+        $_SESSION['quantity'] = $total_quantity;
+    }
 }
-
 ?>
 
 <section class="cart container my-5 py-5">
@@ -101,18 +114,18 @@ function calculateTotalCart(){
             <th>Subtotal</th>
         </tr>
 
-        <?php if(!empty($_SESSION['cart'])) { ?>
-            <?php foreach($_SESSION['cart'] as $product) { ?>
+        <?php if (!empty($_SESSION['cart'])) { ?>
+            <?php foreach ($_SESSION['cart'] as $product_key => $product) { ?>
                 <tr>
                     <td>
                         <div class="product-info">
-                            <img src="assets/imgs/<?php echo $product['product_image']; ?>"/>
+                            <img src="assets/images/<?php echo htmlspecialchars($product['product_image']); ?>"/>
                             <div>
-                                <p><?php echo $product['product_name']; ?></p>
-                                <small><span>$</span><?php echo $product['product_price']; ?></small>
+                                <p><?php echo htmlspecialchars($product['product_name']); ?></p>
+                                <small><span>$</span><?php echo htmlspecialchars($product['product_price']); ?></small>
                                 <br>
                                 <form method="POST" action="cart.php">
-                                    <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>"/>
+                                    <input type="hidden" name="product_key" value="<?php echo $product_key; ?>"/>
                                     <input type="submit" name="remove_product" class="remove-btn" value="Remove"/>
                                 </form>
                             </div>
@@ -121,8 +134,14 @@ function calculateTotalCart(){
 
                     <td>
                         <form method="POST" action="cart.php">
-                            <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>"/>
-                            <input type="hidden" name="size_name" value="<?php echo $size['product_id']; ?>"/>
+                            <input type="hidden" name="product_key" value="<?php echo $product_key; ?>"/>
+                            <input type="text" name="size_name" value="<?php echo htmlspecialchars($product['size_name']); ?>" required/> 
+                            <input type="submit" class="edit-btn" value="Edit" name="edit_quantity"/>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="POST" action="cart.php">
+                            <input type="hidden" name="product_key" value="<?php echo $product_key; ?>"/>
                             <input type="number" name="product_quantity" value="<?php echo $product['product_quantity']; ?>" min="1" required/>
                             <input type="submit" class="edit-btn" value="Edit" name="edit_quantity"/>
                         </form>
@@ -130,12 +149,14 @@ function calculateTotalCart(){
 
                     <td>
                         <span>$</span>
-                        <span class="product-price"><?php echo $product['product_quantity'] * $product['product_price'];?></span>
+                        <span class="product-price"><?php echo $product['product_quantity'] * $product['product_price']; ?></span>
                     </td>
                 </tr>
             <?php } ?>
         <?php } else { ?>
-            <tr><td colspan="3">Your cart is empty.</td></tr>
+            <tr>
+                <td colspan="4" style="text-align: center; font-size: 1.2em; color: gray;">Your cart is empty.</td>
+            </tr>
         <?php } ?>
     </table>
 

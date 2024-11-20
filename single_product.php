@@ -31,7 +31,7 @@ include('layouts/header.php');
     <div class="row mt-5">
         <?php while ($row = $product->fetch_assoc()) { ?>
         <div class="col-lg-5 col-md-6 col-sm-12">
-            <img class="img-fluid w-100 pb-1" src="assets/imgs/<?php echo $row['product_image']; ?>" id="mainImg"/>
+            <img class="img-fluid w-100 pb-1" src="assets/images/<?php echo $row['product_image']; ?>" id="mainImg"/>
             <div class="small-img-group">
                 <div class="small-img-col">
                     <img src="assets/imgs/<?php echo $row['product_image']; ?>" width="100%" class="small-img"/>

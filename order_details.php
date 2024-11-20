@@ -41,6 +41,7 @@ function calculateTotalOrderPrice($order_details){
 
         $product_price = $row['product_price'];
         $product_quantity = $row['product_quantity'];
+        $size_name = $row['size_name'];
 
        $total = $total + ($product_price * $product_quantity);
 
@@ -74,6 +75,7 @@ include('layouts/header.php');
             <tr>
                 <th>Product</th>
                 <th>Price</th>
+                <th>Size</th>
                 <th>Quantity</th>
             </tr>
 
@@ -81,7 +83,7 @@ include('layouts/header.php');
                     <tr>
                         <td>
                             <div class="product-info">
-                                <img src="assets/imgs/<?php echo $row['product_image']; ?>" />
+                                <img src="assets/images/<?php echo $row['product_image']; ?>" />
                                 <div>
                                     <p class="mt-3"><?php echo $row['product_name']; ?></p>
                                 </div>
@@ -91,6 +93,10 @@ include('layouts/header.php');
 
                         <td>
                             <span>$<?php echo $row['product_price']; ?></span>
+                        </td>
+
+                        <td>
+                            <span><?php echo $row['size_name']; ?></span>
                         </td>
 
                         <td>
