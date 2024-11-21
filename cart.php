@@ -145,19 +145,19 @@ function calculateTotalCart() {
                     </td>
 
                     <td>
-                        <form method="POST" action="cart.php">
-                            <input type="hidden" name="product_key" value="<?php echo $product_key; ?>"/>
+                        <!-- <form method="POST" action="cart.php">
+                            <input type="hidden" name="product_key" value="<?php echo $product_key; ?>"/> -->
                             <input type="text" name="size_name" value="<?php echo htmlspecialchars($product['size_name']); ?>" required/> 
-                            <input type="submit" class="edit-btn" value="Edit" name="edit_quantity"/>
+                            <!-- <input type="submit" class="edit-btn" value="Edit" name="edit_quantity"/> -->
                         </form>
                     </td>
 
                     <td>
-                        <form method="POST" action="cart.php">
-                            <input type="hidden" name="product_key" value="<?php echo $product_key; ?>"/>
+                        <!-- <form method="POST" action="cart.php">
+                            <input type="hidden" name="product_key" value="<?php echo $product_key; ?>"/> -->
                             <input type="number" name="product_quantity" value="<?php echo $product['product_quantity']; ?>" min="1" required/>
-                            <input type="submit" class="edit-btn" value="Edit" name="edit_quantity"/>
-                        </form>
+                            <!-- <input type="submit" class="edit-btn" value="Edit" name="edit_quantity"/>
+                        </form> -->
                     </td>
 
                     <td>
@@ -175,6 +175,13 @@ function calculateTotalCart() {
 
     <div class="cart-total">
         <table>
+            <tr>
+                        <form method="POST" action="cart.php">
+                            <input type="hidden" name="product_key" value="<?php echo $product_key; ?>"/>
+                            <input type="submit" 
+                            class="edit-btn" value="Update Your Cart" name="edit_quantity"/>
+                        </form>
+            </tr>
             <tr>
                 <td>Total</td>
                 <td>$ <?php echo $_SESSION['total'] ?? 0; ?></td>
