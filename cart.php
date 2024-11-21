@@ -15,6 +15,12 @@ if (isset($_POST['add_to_cart']) && isset($_POST['product_id']) && isset($_POST[
     $size_name = filter_var($_POST['size_name'], FILTER_SANITIZE_STRING); // Xử lý kích thước an toàn
     $product_size_id = $_POST['product_size_id'];
 
+    // Kiểm tra xem có chọn size hay không
+    if (empty($size_name)) {
+        echo "<div class='alert alert-danger'>Please select a size for the product.</div>";
+        exit;
+    }
+
     // Tạo khóa duy nhất cho sản phẩm theo product_id và size_name
     $product_key = $product_id . "_" . $size_name;
 
@@ -32,10 +38,11 @@ if (isset($_POST['add_to_cart']) && isset($_POST['product_id']) && isset($_POST[
                 'product_size_id' => $product_size_id
             );
             $_SESSION['cart'][$product_key] = $product_array;
-            echo "<div class='alert alert-success'>Product added to cart successfully!</div>";
+            echo "<div class='alert alert-success'>Product " . htmlspecialchars($product_array['product_name']) . " (Size: " . htmlspecialchars($size_name) . ") added to cart successfully!</div>";
         } else {
             // Nếu sản phẩm đã có trong giỏ hàng, cộng thêm số lượng
             $_SESSION['cart'][$product_key]['product_quantity'] += $product_quantity; // Cộng thêm số lượng
+            echo "<div class='alert alert-success'>Product quantity updated in the cart.</div>";
         }
     } else { 
         // Nếu đây là sản phẩm đầu tiên
@@ -49,7 +56,7 @@ if (isset($_POST['add_to_cart']) && isset($_POST['product_id']) && isset($_POST[
             'product_size_id' => $product_size_id
         );
         $_SESSION['cart'][$product_key] = $product_array;
-        echo "<div class='alert alert-success'>Product added to cart successfully!</div>";
+        echo "<div class='alert alert-success'>Product " . htmlspecialchars($product_array['product_name']) . " (Size: " . htmlspecialchars($size_name) . ") added to cart successfully!</div>";
     }
 
     calculateTotalCart();
@@ -68,15 +75,15 @@ if (isset($_POST['edit_quantity']) && isset($_POST['product_key']) && isset($_PO
     $product_quantity = intval($_POST['product_quantity']);
     $size_name = filter_var($_POST['size_name'], FILTER_SANITIZE_STRING); // Xử lý kích thước an toàn
 
-    // Cập nhật số lượng và size
+    // Kiểm tra số lượng hợp lệ
     if ($product_quantity > 0) {
-        $_SESSION['cart'][$product_key]['product_quantity'] = $product_quantity;
+        $_SESSION['cart'][$product_key]['product_quantity'] = $product_quantity; // Cập nhật số lượng
     }
-    if (!empty($size_name)) {
-        $_SESSION['cart'][$product_key]['size_name'] = $size_name;
+    if (!empty($size_name) && $size_name !== $_SESSION['cart'][$product_key]['size_name']) {
+        $_SESSION['cart'][$product_key]['size_name'] = $size_name; // Cập nhật kích thước nếu thay đổi
     }
 
-    calculateTotalCart();
+    calculateTotalCart(); // Tính lại tổng giỏ hàng
 }
 
 // Hàm tính tổng giỏ hàng
@@ -140,10 +147,11 @@ function calculateTotalCart() {
                     <td>
                         <form method="POST" action="cart.php">
                             <input type="hidden" name="product_key" value="<?php echo $product_key; ?>"/>
-                            <input type="text" name="prodcut_size_id" value="<?php echo htmlspecialchars($product['size_name']); ?>" required/> 
+                            <input type="text" name="size_name" value="<?php echo htmlspecialchars($product['size_name']); ?>" required/> 
                             <input type="submit" class="edit-btn" value="Edit" name="edit_quantity"/>
                         </form>
                     </td>
+
                     <td>
                         <form method="POST" action="cart.php">
                             <input type="hidden" name="product_key" value="<?php echo $product_key; ?>"/>
