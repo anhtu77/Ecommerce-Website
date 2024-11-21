@@ -34,16 +34,16 @@ include('layouts/header.php');
             <img class="img-fluid w-100 pb-1" src="assets/images/<?php echo $row['product_image']; ?>" id="mainImg"/>
             <div class="small-img-group">
                 <div class="small-img-col">
-                    <img src="assets/imgs/<?php echo $row['product_image']; ?>" width="100%" class="small-img"/>
+                    <img src="assets/images/<?php echo $row['product_image']; ?>" width="100%" class="small-img"/>
                 </div>
                 <div class="small-img-col">
-                    <img src="assets/imgs/<?php echo $row['product_image2']; ?>" width="100%" class="small-img"/>
+                    <img src="assets/images/<?php echo $row['product_image2']; ?>" width="100%" class="small-img"/>
                 </div>
                 <div class="small-img-col">
-                    <img src="assets/imgs/<?php echo $row['product_image3']; ?>" width="100%" class="small-img"/>
+                    <img src="assets/images/<?php echo $row['product_image3']; ?>" width="100%" class="small-img"/>
                 </div>
                 <div class="small-img-col">
-                    <img src="assets/imgs/<?php echo $row['product_image4']; ?>" width="100%" class="small-img"/>
+                    <img src="assets/images/<?php echo $row['product_image4']; ?>" width="100%" class="small-img"/>
                 </div>
             </div>
         </div>
@@ -61,9 +61,9 @@ include('layouts/header.php');
 
                 <!-- Dropdown cho lựa chọn size -->
                 <label for="size">Choose size:</label>
-                <select name="product_size" id="size">
+                <select name="product_size_id" id="size">
                     <?php while ($size_row = $sizes_result->fetch_assoc()) { ?>
-                        <option value="<?php echo $size_row['product_size_id']; ?>" data-size-name="<?php echo $size_row['size_name']; ?>">
+                        <option value="<?php echo $size_row['product_size_id']; ?>" data-size-name="<?php echo $size_row['size_name']; ?>" data-stock="<?php echo $size_row['stock']; ?>">
                             <?php echo $size_row['size_name']; ?> - Stock: <?php echo $size_row['stock']; ?>
                         </option>
                     <?php } ?>
@@ -73,7 +73,8 @@ include('layouts/header.php');
                 <input type="hidden" name="size_name" id="size_name" value=""/>
 
                 <!-- Số lượng sản phẩm -->
-                <input type="number" name="product_quantity" value="1" min="1"/>
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="product_quantity" value="1" min="1" id="quantity"/>
 
                 <button class="buy-btn" type="submit" name="add_to_cart">Add To Cart</button>
             </form>
@@ -89,10 +90,18 @@ include('layouts/header.php');
     // Cập nhật size_name khi chọn kích thước
     const sizeDropdown = document.getElementById('size');
     const sizeNameInput = document.getElementById('size_name');
+    const quantityInput = document.getElementById('quantity');
     
     sizeDropdown.addEventListener('change', function () {
         const selectedOption = this.options[this.selectedIndex];
         sizeNameInput.value = selectedOption.getAttribute('data-size-name');
+        
+        // Cập nhật giới hạn số lượng theo tồn kho
+        const stock = parseInt(selectedOption.getAttribute('data-stock'));
+        quantityInput.max = stock; // Giới hạn số lượng không vượt quá tồn kho
+        if (parseInt(quantityInput.value) > stock) {
+            quantityInput.value = stock; // Nếu số lượng vượt quá tồn kho, điều chỉnh lại
+        }
     });
 
     // Gọi sự kiện change để cập nhật mặc định khi trang tải
