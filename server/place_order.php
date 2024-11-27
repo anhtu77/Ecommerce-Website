@@ -51,7 +51,8 @@ if (isset($_POST['place_order'])) {
         $product_quantity = $product['product_quantity'];
         $product_size_id = $product['product_size_id']; // Lấy kích cỡ từ giỏ hàng
         //size
-        $size_name =$product['size_name'];
+        $size_name = $product['size_name'];
+
         // Kiểm tra nếu size_id không tồn tại trong giỏ hàng
         if (!isset($product['product_size_id'])) {
             header('location: ../checkout.php?message=Vui lòng chọn kích cỡ cho sản phẩm: ' . $product_name);
@@ -78,12 +79,12 @@ if (isset($_POST['place_order'])) {
         }
 
         // Thêm sản phẩm vào bảng order_items
-        $stmt1 = $conn->prepare("INSERT INTO order_items (order_id, product_id, product_name, product_image, product_price, product_quantity, user_id, order_date,size_name)
+        $stmt1 = $conn->prepare("INSERT INTO order_items (order_id, product_id, product_name, product_image, product_price, product_quantity, user_id, order_date, size_name)
                                  VALUES (?,?,?,?,?,?,?,?,?)");
         if ($stmt1 === false) {
             die('Error preparing statement for order items: ' . $conn->error);
         }
-        $stmt1->bind_param('iissiisss', $order_id, $product_id, $product_name, $product_image, $product_price, $product_quantity, $user_id, $order_date,$size_name);
+        $stmt1->bind_param('iissiisss', $order_id, $product_id, $product_name, $product_image, $product_price, $product_quantity, $user_id, $order_date, $size_name);
         if (!$stmt1->execute()) {
             die('Error executing query for order items: ' . $stmt1->error);
         }
@@ -110,7 +111,9 @@ if (isset($_POST['place_order'])) {
     }
 
     // Xóa giỏ hàng sau khi đặt hàng thành công
-    unset($_SESSION['cart']);
+    if (isset($_SESSION['cart'])) {
+        unset($_SESSION['cart']);
+    }
 
     // Lưu ID đơn hàng vào session và chuyển hướng
     $_SESSION['order_id'] = $order_id;
