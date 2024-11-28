@@ -70,6 +70,7 @@
                         <th scope="col">User Address</th>
                         <th scope="col">Edit</th>
                         <th scope="col">Delete</th>
+                        <th scope="col">Detail</th>
                         
                       </tr>
                     </thead>
@@ -84,6 +85,7 @@
                         <td><?php echo $order['user_address'] ;?></td>
                         <td><a class="btn btn-primary" href="edit_order.php?order_id=<?php echo $order['order_id']; ?>">Edit</a></td>
                         <td><a class="btn btn-danger" href="delete_order.php?order_id=<?php echo $order['order_id']; ?>">Delete</a></td>
+                        <td><a class="btn btn-primary" href="detail_order.php?order_id=<?php echo $order['order_id']; ?>">Detail</a></td>
                       </tr>
 
                       <?php } ?>
