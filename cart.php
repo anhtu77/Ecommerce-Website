@@ -147,7 +147,9 @@ function calculateTotalCart() {
                 <tr>
                     <td>
                         <div class="product-info">
-                            <img src="assets/images/<?php echo htmlspecialchars($product['product_image']); ?>"/>
+                        <a href="single_product.php?product_id=<?php echo htmlspecialchars($product['product_id']); ?>">
+                            <img src="assets/images/<?php echo htmlspecialchars($product['product_image']); ?>" alt="<?php echo htmlspecialchars($product['product_name']); ?>"/>
+                        </a>
                             <div>
                                 <p><?php echo htmlspecialchars($product['product_name']); ?></p>
                                 <small><span>$</span><?php echo htmlspecialchars($product['product_price']); ?></small>
@@ -159,14 +161,16 @@ function calculateTotalCart() {
                             </div>
                         </div>
                     </td>
+                    
 
                     <td>
                         <form method="POST" action="cart.php">
                             <input type="hidden" name="product_key" value="<?php echo $product_key; ?>"/>
                             <input type="text" name="size_name" value="<?php echo htmlspecialchars($product['size_name']); ?>" required style="width: 50px;"/> 
-                            <input type="submit" class="edit-btn" value="Edit Size " name="edit_size" style="width: 80px;"/>
+                            <!-- <input type="submit" class="edit-btn" value="Edit Size " name="edit_size" style="width: 80px;"/> -->
                         </form>
                     </td>
+                    
 
                     <td>
                         <form method="POST" action="cart.php">

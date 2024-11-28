@@ -38,7 +38,7 @@ function calculateTotalOrderPrice($order_details){
     $total = 0;
 
     foreach($order_details as $row){
-
+        $product_id = $row['product_id'];
         $product_price = $row['product_price'];
         $product_quantity = $row['product_quantity'];
         $size_name = $row['size_name'];
@@ -83,7 +83,10 @@ include('layouts/header.php');
                     <tr>
                         <td>
                             <div class="product-info">
-                                <img src="assets/images/<?php echo $row['product_image']; ?>" />
+                            <a href="single_product.php?product_id=<?php echo htmlspecialchars($row['product_id']); ?>">
+                                <img src="assets/images/<?php echo $row['product_image']; ?>" alt="<?php echo htmlspecialchars($row['product_name']); ?>" />
+                            </a>
+
                                 <div>
                                     <p class="mt-3"><?php echo $row['product_name']; ?></p>
                                 </div>
